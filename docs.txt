@@ -1,0 +1,26 @@
+TODOS by Priority
+
+
+**FUNDAMENTAL FEATURES**
+
+.Product Page
+
+.Users Cart in DB
+
+.Landing Page displaying best deals in slide, etc.
+
+.Cart Menu sliding from right side
+
+.Persisting filters
+
+
+
+
+
+**PLUSES**
+
+.Add to Cart in Preview ProductCard
+
+.SSR (SEO purposes) on Products.tsx display
+
+.Remove Favorites button in Preview ProductCard
