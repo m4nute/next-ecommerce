@@ -18,7 +18,7 @@ const StyledButton = styled(Button)(`
 
 
 function ProductPage({ data }: any) {
-  const { removeProduct, updateProductQuantity, cart, addProduct } = useCart()
+  const { cart, addProduct } = useCart()
   const [qty, setQty] = useState(1)
   const [selected, setSelected] = useState<number>(0);
   const router = useRouter()
@@ -94,19 +94,19 @@ function ProductPage({ data }: any) {
               <Button color="info" variant="contained" className='bg-333' onClick={() => !(qty >= 10) && (setQty(qty + 1))}> + </Button>
               <span className="text-green-400 text-md ml-4">{data.stock} Available </span>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 mt-6">
               {cart?.map((obj: any) => obj.product.id).includes(data.id) ?
-                <div className="flex mt-6 w-1/2">
-                  <StyledButton color="success" variant="contained" className="bg-green-700 w-full text-md" onClick={() => addProduct(data, qty, true)}>
+                <div className="flex w-1/2">
+                  <StyledButton color="success" variant="contained" className="bg-333 w-full text-md" onClick={() => addProduct(data, qty, true)}>
                     Update amount
                   </StyledButton>
                 </div>
                 :
-                <StyledButton color="info" variant="contained" className="bg-333 w-1/2 mt-6 text-md" onClick={() => addProduct(data, qty)}>
+                <StyledButton color="success" variant="contained" className="bg-333 w-1/2 text-md" onClick={() => addProduct(data, qty)}>
                   Add to Cart
                 </StyledButton>
               }
-              <StyledButton color="success" variant="contained" className='bg-green-700 w-1/2 mt-6 text-md' onClick={() => {
+              <StyledButton color="success" variant="contained" className='bg-333 w-1/2 text-md' onClick={() => {
                 if (cart.every((item: any) => item.product.id !== data.id)) {
                   addProduct(data, qty)
                 }

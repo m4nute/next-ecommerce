@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import { Product } from "../types";
 import useCart from '../hooks/cartHook'
 import { styled } from "@mui/material";
+import { useRouter } from "next/router";
 
 const StyledButton = styled(Button)(`
   text-transform: none;
@@ -25,7 +26,7 @@ function Header() {
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState)
   }
-
+  const router = useRouter()
 
   const { removeProduct, updateProductQuantity, cart, removeAll } = useCart()
 
@@ -133,7 +134,8 @@ function Header() {
                       <h2 className="text-sm">Discount: ${cart.reduce((discount: number, item: any) => { return discount + item.product.price * item.quantity * item.product.discountPercentage / 100 }, 0).toFixed(0)}</h2>
                       <h2 className="mt-4 font-bold">Total: ${cart.reduce((total: number, item: any) => { return total + item.product.price * item.quantity }, 0)}</h2>
                     </div>
-                    <StyledButton color="primary" variant="contained" className='bg-333 w-full text-md'>Proceed to Checkout</StyledButton>
+                    <StyledButton color="primary" variant="contained" className='bg-333 w-full text-md' onClick={() => {
+                      router.push('/checkout'); setIsOpen(false)}}>Proceed to Checkout</StyledButton>
                   </div>
                 </div>
               }

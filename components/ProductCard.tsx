@@ -2,11 +2,11 @@ import React from "react";
 import { Product } from "../types";
 import Image from "next/image";
 import Link from "next/link";
-import useShoppingCart from "../context/cart";
+import useCart from "../hooks/cartHook";
 
 function ProductCard({ prod, index }: { prod: Product, index: number }) {
 
-  const { products, addProduct, removeProduct, updateProductQuantity } = useShoppingCart();
+  const { cart, addProduct } = useCart();
 
   return (
     <>
@@ -34,7 +34,7 @@ function ProductCard({ prod, index }: { prod: Product, index: number }) {
             </span>
           </p>
           <div className="flex justify-between">
-            {products.length !== 0 && products.some(item => item.product.id === prod.id) ?
+            {cart?.length !== 0 && cart?.some((item: any) => item.product.id === prod.id) ?
               <button className="px-2 rounded-md bg-green-600 text-white w-full h-10 transition-all duration-200 hover:bg-green-500">
                 Already In Cart 🛒
               </button>
