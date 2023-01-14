@@ -12,6 +12,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
 
 const StyledButton = styled(Button)(`
   text-transform: none;
@@ -147,3 +148,22 @@ const PaymentForm = () => {
 };
 
 export default PaymentForm;
+
+
+export async function getServerSideProps(context: any) {
+
+    const session = await getSession(context)
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
+        }
+    }
+    return {
+        props: {
+        }
+    };
+}

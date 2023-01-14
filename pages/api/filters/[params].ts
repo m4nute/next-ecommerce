@@ -35,24 +35,27 @@ export const getFilteredProducts = async (
   let query: any = {};
   let sortBy: any = {};
 
-  filters.categories && (query["category"] = { $in: filters.categories });
-  filters.brand && (query["brand"] = { $in: filters.brand });
-  filters.title &&
-    (query["title"] = {
-      $regex: filters.title,
-      $options: "i",
-    });
-  filters.rating && (query["rating"] = { $gte: filters.rating });
-  if (filters.minPrice || filters.maxPrice) {
-    !filters.minPrice && (filters.minPrice = 0);
-    !filters.maxPrice && (filters.maxPrice = 9999);
-    query["price"] = {
-      $gte: filters.minPrice,
-      $lte: filters.maxPrice,
-    };
+  if (filters.stock === 'limited') query['stock'] = { $lte: 12 }
+  else {
+    filters.categories && (query["category"] = { $in: filters.categories });
+    filters.brand && (query["brand"] = { $in: filters.brand });
+    filters.title &&
+      (query["title"] = {
+        $regex: filters.title,
+        $options: "i",
+      });
+    filters.rating && (query["rating"] = { $gte: filters.rating });
+    if (filters.minPrice || filters.maxPrice) {
+      !filters.minPrice && (filters.minPrice = 0);
+      !filters.maxPrice && (filters.maxPrice = 9999);
+      query["price"] = {
+        $gte: filters.minPrice,
+        $lte: filters.maxPrice,
+      };
+    }
+    filters.sort &&
+      (sortBy = { [filters.sort.split("/")[0]]: filters.sort.split("/")[1] });
   }
-  filters.sort &&
-    (sortBy = { [filters.sort.split("/")[0]]: filters.sort.split("/")[1] });
 
   let products: Array<Product>;
   const totalProducts = await ProductModel.countDocuments(query);

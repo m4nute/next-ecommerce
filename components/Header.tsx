@@ -1,7 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
-import NavLink from "../components/NavLink";
-import PlansBtn from "../components/PlansBtn";
+import OwnNavLink from "../components/NavLink";
 import Badge, { BadgeProps } from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
@@ -14,11 +13,12 @@ import { Product } from "../types";
 import useCart from '../hooks/cartHook'
 import { styled } from "@mui/material";
 import { useRouter } from "next/router";
+import { useSession, signOut } from "next-auth/react"
+import {  Text, Avatar, Dropdown } from "@nextui-org/react";
 
 const StyledButton = styled(Button)(`
   text-transform: none;
 `);
-
 
 
 function Header() {
@@ -27,6 +27,8 @@ function Header() {
     setIsOpen((prevState) => !prevState)
   }
   const router = useRouter()
+
+  const { data: session } = useSession()
 
   const { removeProduct, updateProductQuantity, cart, removeAll } = useCart()
 
@@ -41,7 +43,7 @@ function Header() {
       fontWeight: "bold",
     },
   }));
-  
+
   return (
     <header
       className='p-4 sticky inset-x-0 top-0 z-50 transition-all bg-opacity-80 bg-clip-padding duration-100 navTransition text-gray-200 bg-111 navDefault'
@@ -54,17 +56,63 @@ function Header() {
             Peda Store
           </p>
         </Link>
-        {/*         <div className="flex justify-center w-1/2">
-          <NavLink navText={"Paid Plans"} redirect={"/plans"} align={true} />
-          <NavLink navText={"Best Deals"} redirect={"/deals"} align={true} />
-          <NavLink navText={"Men"} redirect={"/men"} align={true} />
-          <NavLink navText={"Women"} redirect={"/women"} align={true} />
+
+        <div className="flex justify-center w-1/2">
+          <OwnNavLink navText={"Best Deals"} redirect={"/?sort=discountPercentage%2F-1"} align={true} />
+          <OwnNavLink navText={"Limited Products"} redirect={"/?stock=limited"} align={true} />
         </div>
-        */}
-        <NavLink navText={"Sign In"} redirect={"/login"} align={false} />
-        <NavLink navText={"Sign Up"} redirect={"/signup"} align={false} />
 
         <div className="w-1/4 justify-end flex carrito">
+          {!session ?
+            <>
+              <OwnNavLink navText={"Sign In"} redirect={"/login"} align={true} />
+              <OwnNavLink navText={"Sign Up"} redirect={"/signup"} align={true} />
+            </>
+            :
+            <div className="flex flex-col justify-center mr-2">
+              <Dropdown placement="bottom-right">
+                <Dropdown.Trigger>
+                  <Avatar
+                    as="button"
+                    size="md"
+                    src={session.user?.image || undefined}
+                  />
+                </Dropdown.Trigger>
+                <Dropdown.Menu
+                  aria-label="User menu actions"
+                  color="secondary"
+                  onAction={key => {
+                    if (key === 'purchases') {
+                      router.push('/account#purchases')
+                    }
+                    else if (key === 'account') {
+                      router.push('/account')
+                    }
+                    else if (key === 'logout') {
+                      signOut({ callbackUrl: 'http://localhost:3000/login' })
+                    }
+                  }}
+                >
+                  <Dropdown.Item key="profile" css={{ height: "$18" }} textValue="hola">
+                    <Text b color="inherit" css={{ d: "flex" }} className="w-full">
+                      Signed in as
+                    </Text>
+                    <Text b color="inherit" css={{ d: "flex" }} className="w-full">
+                      <span className={` ${session?.user?.email && session?.user?.email?.length > 22 ? "text-sm" : "text-md"} text-ellipsis overflow-hidden whitespace-nowrap`}>
+                        {session.user?.email}
+                      </span>
+                    </Text>
+                  </Dropdown.Item>
+                  <Dropdown.Item textValue="hola" key="account" withDivider>My Account</Dropdown.Item>
+                  <Dropdown.Item textValue="hola" key="purchases">Purchases</Dropdown.Item>
+                  <Dropdown.Item textValue="hola" key="logout" withDivider color="error" >
+                    Log Out
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+          }
+
           <IconButton onClick={toggleDrawer}>
             <StyledBadge
               badgeContent={cart?.length}
@@ -135,7 +183,8 @@ function Header() {
                       <h2 className="mt-4 font-bold">Total: ${cart.reduce((total: number, item: any) => { return total + item.product.price * item.quantity }, 0)}</h2>
                     </div>
                     <StyledButton color="primary" variant="contained" className='bg-333 w-full text-md' onClick={() => {
-                      router.push('/checkout'); setIsOpen(false)}}>Proceed to Checkout</StyledButton>
+                      router.push('/checkout'); setIsOpen(false)
+                    }}>Proceed to Checkout</StyledButton>
                   </div>
                 </div>
               }

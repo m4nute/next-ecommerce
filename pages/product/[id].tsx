@@ -91,7 +91,7 @@ function ProductPage({ data }: any) {
             <div className="flex mt-6">
               <h1 className="flex"><span className="text-lg flex flex-col justify-center pr-2">Amount:</span> <span className="flex flex-col justify-center mr-4">{qty}</span></h1>
               <Button color="info" variant="contained" className="bg-333 mr-3" onClick={() => !(qty === 1) && (setQty(qty - 1))}> - </Button>
-              <Button color="info" variant="contained" className='bg-333' onClick={() => !(qty >= 10) && (setQty(qty + 1))}> + </Button>
+              <Button color="info" variant="contained" className='bg-333' onClick={() => !(qty >= 10 || qty >= data.stock) && (setQty(qty + 1))}> + </Button>
               <span className="text-green-400 text-md ml-4">{data.stock} Available </span>
             </div>
             <div className="flex gap-4 mt-6">

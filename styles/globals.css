@@ -84,3 +84,6 @@ input {
  outline:none;
 }
 
+.nextui-dropdown-item-content {
+  width: 100%;
+}
