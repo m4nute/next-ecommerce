@@ -14,7 +14,7 @@ import useCart from '../hooks/cartHook'
 import { styled } from "@mui/material";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react"
-import {  Text, Avatar, Dropdown } from "@nextui-org/react";
+import { Text, Avatar, Dropdown } from "@nextui-org/react";
 
 const StyledButton = styled(Button)(`
   text-transform: none;
@@ -28,8 +28,8 @@ function Header() {
   }
   const router = useRouter()
 
-  const { data: session } = useSession()
-
+  const { data: session, status } = useSession()
+  console.log(status)
   const { removeProduct, updateProductQuantity, cart, removeAll } = useCart()
 
   const StyledBadge = styled(Badge)<BadgeProps>(() => ({
@@ -63,55 +63,59 @@ function Header() {
         </div>
 
         <div className="w-1/4 justify-end flex carrito">
-          {!session ?
-            <>
-              <OwnNavLink navText={"Sign In"} redirect={"/login"} align={true} />
-              <OwnNavLink navText={"Sign Up"} redirect={"/signup"} align={true} />
-            </>
-            :
-            <div className="flex flex-col justify-center mr-2">
-              <Dropdown placement="bottom-right">
-                <Dropdown.Trigger>
-                  <Avatar
-                    as="button"
-                    size="md"
-                    src={session.user?.image || undefined}
-                  />
-                </Dropdown.Trigger>
-                <Dropdown.Menu
-                  aria-label="User menu actions"
-                  color="secondary"
-                  onAction={key => {
-                    if (key === 'purchases') {
-                      router.push('/account#purchases')
-                    }
-                    else if (key === 'account') {
-                      router.push('/account')
-                    }
-                    else if (key === 'logout') {
-                      signOut({ callbackUrl: 'http://localhost:3000/login' })
-                    }
-                  }}
-                >
-                  <Dropdown.Item key="profile" css={{ height: "$18" }} textValue="hola">
-                    <Text b color="inherit" css={{ d: "flex" }} className="w-full">
-                      Signed in as
-                    </Text>
-                    <Text b color="inherit" css={{ d: "flex" }} className="w-full">
-                      <span className={` ${session?.user?.email && session?.user?.email?.length > 22 ? "text-sm" : "text-md"} text-ellipsis overflow-hidden whitespace-nowrap`}>
-                        {session.user?.email}
-                      </span>
-                    </Text>
-                  </Dropdown.Item>
-                  <Dropdown.Item textValue="hola" key="account" withDivider>My Account</Dropdown.Item>
-                  <Dropdown.Item textValue="hola" key="purchases">Purchases</Dropdown.Item>
-                  <Dropdown.Item textValue="hola" key="logout" withDivider color="error" >
-                    Log Out
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
+          {
+            status !== 'loading' && (
+              !session ?
+                <>
+                  <OwnNavLink navText={"Sign In"} redirect={"/login"} align={true} />
+                  <OwnNavLink navText={"Sign Up"} redirect={"/signup"} align={true} />
+                </>
+                :
+                <div className="flex flex-col justify-center mr-2">
+                  <Dropdown placement="bottom-right">
+                    <Dropdown.Trigger>
+                      <Avatar
+                        as="button"
+                        size="md"
+                        src={session.user?.image || 'https://imgs.search.brave.com/lfVSxDcSs8exH_5USRuckuzsveb1aaqhT7f17NhiDaM/rs:fit:400:400:1/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzU4L2Yy/L2RlLzU4ZjJkZTUw/YmFkMGZiMjRjMjRk/NDc1Nzg0MWQ1N2M0/LmpwZw' || undefined}
+                      />
+                    </Dropdown.Trigger>
+                    <Dropdown.Menu
+                      aria-label="User menu actions"
+                      color="secondary"
+                      onAction={key => {
+                        if (key === 'purchases') {
+                          router.push('/account#purchases')
+                        }
+                        else if (key === 'account') {
+                          router.push('/account')
+                        }
+                        else if (key === 'logout') {
+                          signOut({ callbackUrl: 'http://localhost:3000/login' })
+                        }
+                      }}
+                    >
+                      <Dropdown.Item key="profile" css={{ height: "$18" }} textValue="hola">
+                        <Text b color="inherit" css={{ d: "flex" }} className="w-full">
+                          Signed in as
+                        </Text>
+                        <Text b color="inherit" css={{ d: "flex" }} className="w-full">
+                          <span className={` ${session?.user?.email && session?.user?.email?.length > 22 ? "text-sm" : "text-md"} text-ellipsis overflow-hidden whitespace-nowrap`}>
+                            {session.user?.email}
+                          </span>
+                        </Text>
+                      </Dropdown.Item>
+                      <Dropdown.Item textValue="hola" key="account" withDivider>My Account</Dropdown.Item>
+                      <Dropdown.Item textValue="hola" key="purchases">Purchases</Dropdown.Item>
+                      <Dropdown.Item textValue="hola" key="logout" withDivider color="error" >
+                        Log Out
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+            )
           }
+
 
           <IconButton onClick={toggleDrawer}>
             <StyledBadge
