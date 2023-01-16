@@ -13,12 +13,13 @@ import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
+import PurchasesModel from '../model/Purchases';
 
 const StyledButton = styled(Button)(`
   text-transform: none;
 `);
 
-const PaymentForm = () => {
+const PaymentForm = ({ data }: any) => {
     const [cardNumber, setCardNumber] = useState('');
     const [expirationDate, setExpirationDate] = useState('');
     const [cvc, setCvc] = useState('');
@@ -28,7 +29,6 @@ const PaymentForm = () => {
     const { removeProduct, updateProductQuantity, cart, removeAll } = useCart()
 
     const handleSubmit = (event: any) => {
-        console.log('holaa')
         event.preventDefault();
         if (cart?.length === 0) {
             Swal.fire({
@@ -43,11 +43,12 @@ const PaymentForm = () => {
             })
 
         }
-        if (cardNumber === '' || expirationDate === '' || cvc === '' || country === '' || zip === '' || name === '') {
+
+        if (cardNumber.length === 0 || expirationDate.length === 0 || cvc.length === 0 || country.length === 0 || zip.length === 0 || name.length === 0) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Cart is empty!',
+                text: 'Invalid form data!',
                 showCloseButton: true,
             }).then((result) => {
                 if (result.isDismissed) {
@@ -55,19 +56,23 @@ const PaymentForm = () => {
                 }
             })
         }
+        else {
+            Swal.fire({
+                icon: 'success',
+                title: 'All done!',
+                text: 'Checkout completed successfully',
+                showConfirmButton: true,
+            })
 
-        Swal.fire({
-            icon: 'success',
-            title: 'All done!',
-            text: 'Checkout completed successfully',
-            showConfirmButton: true,
-        })
 
-        axios.post('/api/stock', cart)
-        .then((res) => {if (res.status === 203) {
-            removeAll()
-            router.back();
-        }})
+            axios.post('/api/stock', [cart, data.user.email])
+                .then((res) => {
+                    if (res.status === 203) {
+                        removeAll()
+                        router.back();
+                    }
+                })
+        }
     }
 
 
@@ -164,6 +169,7 @@ export async function getServerSideProps(context: any) {
     }
     return {
         props: {
+            data: session
         }
     };
 }

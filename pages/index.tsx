@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MultiSelectFilter from "../components/MultiSelectFilter";
 import BrandFilter from "../components/BrandFilter";
 import SortFilter from "../components/SortFilter";
@@ -520,6 +520,7 @@ const defaultFilters = {
   rating: null,
   sort: null,
   page: 1,
+  stock: '+12'
 };
 
 function Home({ data }: any) {
@@ -537,8 +538,8 @@ function Home({ data }: any) {
     currentPage = data.currentPage
     results = JSON.parse(results)
   }
-  
-  const [filters, setFilters] = useState<any>(Object.assign({}, router.query, defaultFilters));
+  const isFirstRun = useRef(true);
+  const [filters, setFilters] = useState<any>({ ...defaultFilters, ...router.query });
 
   const handleChange = (key: string, value: any) => {
     (key !== "page" && filters.page !== 1) && setFilters((prev: any) => ({ ...prev, page: 1 }));
@@ -546,6 +547,10 @@ function Home({ data }: any) {
   };
 
   useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
     router.push({
       pathname: "/",
       query: Object.keys(filters).reduce((acc, key) => {
@@ -553,7 +558,6 @@ function Home({ data }: any) {
         return acc;
       }, {})
     });
-
   }, [filters]);
 
   const handleReset = () => {

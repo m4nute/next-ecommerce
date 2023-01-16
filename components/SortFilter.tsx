@@ -2,12 +2,12 @@ import { Select } from "@mantine/core";
 import React from "react";
 
 const data = [
-  { label: "Rating ⬆️", value: "rating/1" },
-  { label: "Rating ⬇️", value: "rating/-1" },
-  { label: "Price ⬆️", value: "price/1" },
-  { label: "Price ⬇️", value: "price/-1" },
-  { label: "Discount ⬆️", value: "discountPercentage/1" },
-  { label: "Discount ⬇️", value: "discountPercentage/-1" },
+  { label: "Rating ⬇️", value: "rating/1" },
+  { label: "Rating ⬆️", value: "rating/-1" },
+  { label: "Price ⬇️", value: "price/1" },
+  { label: "Price ⬆️", value: "price/-1" },
+  { label: "Discount ⬇️", value: "discountPercentage/1" },
+  { label: "Discount ⬆️", value: "discountPercentage/-1" },
 ];
 
 export default function SortFilter({ setSort, sort }: any) {

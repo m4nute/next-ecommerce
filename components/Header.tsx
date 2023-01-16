@@ -29,7 +29,7 @@ function Header() {
   const router = useRouter()
 
   const { data: session, status } = useSession()
-  console.log(status)
+
   const { removeProduct, updateProductQuantity, cart, removeAll } = useCart()
 
   const StyledBadge = styled(Badge)<BadgeProps>(() => ({
@@ -43,7 +43,6 @@ function Header() {
       fontWeight: "bold",
     },
   }));
-
   return (
     <header
       className='p-4 sticky inset-x-0 top-0 z-50 transition-all bg-opacity-80 bg-clip-padding duration-100 navTransition text-gray-200 bg-111 navDefault'
@@ -56,11 +55,6 @@ function Header() {
             Peda Store
           </p>
         </Link>
-
-        <div className="flex justify-center w-1/2">
-          <OwnNavLink navText={"Best Deals"} redirect={"/?sort=discountPercentage%2F-1"} align={true} />
-          <OwnNavLink navText={"Limited Products"} redirect={"/?stock=limited"} align={true} />
-        </div>
 
         <div className="w-1/4 justify-end flex carrito">
           {
@@ -84,10 +78,7 @@ function Header() {
                       aria-label="User menu actions"
                       color="secondary"
                       onAction={key => {
-                        if (key === 'purchases') {
-                          router.push('/account#purchases')
-                        }
-                        else if (key === 'account') {
+                        if (key === 'account') {
                           router.push('/account')
                         }
                         else if (key === 'logout') {
@@ -106,7 +97,6 @@ function Header() {
                         </Text>
                       </Dropdown.Item>
                       <Dropdown.Item textValue="hola" key="account" withDivider>My Account</Dropdown.Item>
-                      <Dropdown.Item textValue="hola" key="purchases">Purchases</Dropdown.Item>
                       <Dropdown.Item textValue="hola" key="logout" withDivider color="error" >
                         Log Out
                       </Dropdown.Item>
