@@ -48,7 +48,7 @@ function Header() {
       className='p-4 sticky inset-x-0 top-0 z-50 transition-all bg-opacity-80 bg-clip-padding duration-100 navTransition text-gray-200 bg-111 navDefault'
     >
       <div className="flex justify-between">
-        <Link className={`font-bold text-3xl flex w-1/4 text-222`} href="/">
+        <Link className={`font-bold text-2xl flex w-1/4 text-222`} href="/">
           <p
             className={`flex flex-col justify-center text-gray-200 transition-all duration-300`}
           >
@@ -62,7 +62,6 @@ function Header() {
               !session ?
                 <>
                   <OwnNavLink navText={"Sign In"} redirect={"/login"} align={true} />
-                  <OwnNavLink navText={"Sign Up"} redirect={"/signup"} align={true} />
                 </>
                 :
                 <div className="flex flex-col justify-center mr-2">
@@ -185,8 +184,6 @@ function Header() {
 
             </div>
           </Drawer>
-          {/* <PlansBtn /> */}
-
         </div>
       </div>
 
