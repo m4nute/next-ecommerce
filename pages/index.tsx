@@ -12,7 +12,7 @@ import ProductCard from "../components/ProductCard";
 import PaginationComponent from "../components/Pagination";
 import { NextPageContext } from "next";
 import Drawer from 'react-modern-drawer'
-
+import { SortAscending } from 'tabler-icons-react';
 
 const defaultData = {
   "pages": 5,
@@ -543,8 +543,8 @@ function Home({ data }: any) {
   useEffect(() => {
     window.addEventListener('resize', resizeHandler);
   }, []);
-  
-  
+
+
   const router = useRouter();
 
   let results, pages, currentPage
@@ -586,15 +586,76 @@ function Home({ data }: any) {
     setFilters(defaultFilters);
   }
   return (
-    <div className="mt-4 flex px-5 text-gray-200">
-      {typeof window !== "undefined" && window.innerWidth < 768 ? <Drawer
-        customIdSuffix="drawer"
-        open={isOpen}
-        onClose={toggleDrawer}
-        direction='left'
-        style={{ backgroundColor: '#111' }}
-        size={`50vw`}
-      >
+    <div className={`mt-4 flex sm:px-5 text-gray-200`}>
+      {typeof window !== "undefined" && window.innerWidth < 768 ?
+        <>
+          <Drawer
+            customIdSuffix="drawer2"
+            open={isOpen}
+            onClose={toggleDrawer}
+            direction='right'
+            style={{ backgroundColor: '#111' }}
+            size={`${typeof window !== "undefined" && window.innerWidth < 500 ? '75vw' : '50vw' }`}
+          >
+            <div className="h-screen py-6 px-4">
+              <div className="flex justify-between "><h1 className="text-xl font-bold ml-2 mt-1 flex"><SortAscending
+                size={20}
+                strokeWidth={2}
+                color={'white'}
+                className="mr-1 mt-1"
+              />
+                Filter & Sort</h1>
+                <span className="text-3xl hover:cursor-pointer mr-3" onClick={toggleDrawer}> &times;</span></div>
+              <div className="fixed z-1 overflow-y-scroll max-h-full pb-32 pl-2 pr-6">
+                <p className="pb-1 font-extrabold pt-6">Categories</p>
+                <MultiSelectFilter
+                  setCategories={(value: string[]) => handleChange("categories", value)}
+                  categoriesF={filters.categories}
+                />
+                <p className="pb-1 font-extrabold pt-6">Brand</p>
+                <BrandFilter
+                  setBrand={(value: string[]) => handleChange("brand", value)}
+                  brand={filters.brand}
+                />
+
+                <p className="pb-1 font-extrabold pt-6">Title</p>
+                <TitleFilter
+                  setTitle={(value: string) => handleChange("title", value)}
+                  title={filters.title}
+                />
+
+                <p className="pb-1 font-extrabold pt-6">Sort</p>
+                <SortFilter
+                  setSort={(value: string) => handleChange("sort", value)}
+                  sort={filters.sort}
+                />
+
+                <p className="pb-1 font-extrabold pt-6">Price Range</p>
+                <PriceInputs
+                  setMinPriceF={(value: any) => { value === undefined ? handleChange("minPrice", 0) : handleChange("minPrice", value) }}
+                  minPriceF={filters.minPrice}
+                  setMaxPriceF={(value: any) => { value === undefined ? handleChange("maxPrice", 9999) : handleChange("maxPrice", value) }}
+                  maxPriceF={filters.maxPrice}
+                />
+
+                <p className="pb-1 font-extrabold pt-6 text-center">Minimum Rating</p>
+                <StarRating
+                  setRating={(value: any) => handleChange("rating", value)}
+                  rating={filters.rating}
+                />
+                <div className="text-center mt-8">
+                  <button
+                    className="bg-222 w-full px-5 py-3 rounded-md hover:text-222 hover:bg-gray-200 text-white hover:transition-all hover:duration-300 duration-300"
+                    onClick={handleReset}
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Drawer>
+        </>
+        :
         <div className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 fixed z-1 overflow-y-scroll max-h-full pb-32 pr-2">
           <p className="pb-1 font-extrabold pt-6">Categories</p>
           <MultiSelectFilter
@@ -640,62 +701,22 @@ function Home({ data }: any) {
               Reset
             </button>
           </div>
-        </div>
-      </Drawer>
-      :
-      <div className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 fixed z-1 overflow-y-scroll max-h-full pb-32 pr-2">
-        <p className="pb-1 font-extrabold pt-6">Categories</p>
-        <MultiSelectFilter
-          setCategories={(value: string[]) => handleChange("categories", value)}
-          categoriesF={filters.categories}
-        />
-        <p className="pb-1 font-extrabold pt-6">Brand</p>
-        <BrandFilter
-          setBrand={(value: string[]) => handleChange("brand", value)}
-          brand={filters.brand}
-        />
-
-        <p className="pb-1 font-extrabold pt-6">Title</p>
-        <TitleFilter
-          setTitle={(value: string) => handleChange("title", value)}
-          title={filters.title}
-        />
-
-        <p className="pb-1 font-extrabold pt-6">Sort</p>
-        <SortFilter
-          setSort={(value: string) => handleChange("sort", value)}
-          sort={filters.sort}
-        />
-
-        <p className="pb-1 font-extrabold pt-6">Price Range</p>
-        <PriceInputs
-          setMinPriceF={(value: any) => { value === undefined ? handleChange("minPrice", 0) : handleChange("minPrice", value) }}
-          minPriceF={filters.minPrice}
-          setMaxPriceF={(value: any) => { value === undefined ? handleChange("maxPrice", 9999) : handleChange("maxPrice", value) }}
-          maxPriceF={filters.maxPrice}
-        />
-
-        <p className="pb-1 font-extrabold pt-6 text-center">Minimum Rating</p>
-        <StarRating
-          setRating={(value: any) => handleChange("rating", value)}
-          rating={filters.rating}
-        />
-        <div className="text-center mt-8">
-          <button
-            className="bg-222 w-full px-5 py-3 rounded-md hover:text-222 hover:bg-gray-200 text-white hover:transition-all hover:duration-300 duration-300"
-            onClick={handleReset}
-          >
-            Reset
-          </button>
-        </div>
-      </div>}
-      <div className="ml-filters flex-1">
+        </div>}
+      <div className="ml-filters flex-1 w-full">
         {results.length > 0 ? (
           <>
+            {typeof window !== "undefined" && window.innerWidth < 768 && <button className="ml-4 flex" onClick={toggleDrawer}>
+              <SortAscending
+                size={20}
+                strokeWidth={2}
+                color={'white'}
+                className="mr-1 mt-0.5"
+              />
+              Filter & Sort</button>}
             <ul className="flex flex-wrap mb-4">
               {results.map((product: Product, index: number) => {
                 return (
-                  <li className="sm:w-1/2 lg:w-1/3 xl:w-1/4 p-4" key={product.id}>
+                  <li className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 p-4" key={product.id}>
                     <ProductCard prod={product} index={index} />
                   </li>
                 );

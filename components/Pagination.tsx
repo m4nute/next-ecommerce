@@ -1,6 +1,7 @@
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useEffect, useState } from "react";
 
 const darkTheme = createTheme({
   palette: {
@@ -9,6 +10,18 @@ const darkTheme = createTheme({
 });
 
 export default function BasicPagination({ handleChange, total, page }: any) {
+  const [width, setWidth] = useState<number>()
+
+  const resizeHandler = () => {
+    setWidth(
+      window.innerWidth,
+    );
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', resizeHandler);
+  }, []);
+
   return (
     <ThemeProvider theme={darkTheme}>
       <Stack spacing={2}>
@@ -16,7 +29,7 @@ export default function BasicPagination({ handleChange, total, page }: any) {
           <Pagination
             count={total}
             page={parseInt(page)}
-            size="large"
+            size={typeof window !== 'undefined' && window.innerWidth < 400 ? 'medium' : 'large'}
             onChange={(e, value) => {
               parseInt(page) !== value && handleChange("page", value);
             }}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OwnNavLink from "../components/NavLink";
 import Badge, { BadgeProps } from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
@@ -43,12 +43,24 @@ function Header() {
       fontWeight: "bold",
     },
   }));
+  const [width, setWidth] = useState<number>()
+
+  const resizeHandler = () => {
+    setWidth(
+      window.innerWidth,
+    );
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', resizeHandler);
+  }, []);
+
   return (
     <header
       className='p-4 sticky inset-x-0 top-0 z-50 transition-all bg-opacity-80 bg-clip-padding duration-100 navTransition text-gray-200 bg-111 navDefault'
     >
       <div className="flex justify-between">
-        <Link className={`font-bold text-2xl flex w-1/4 text-222`} href="/">
+        <Link className={`font-bold text-2xl flex w-1/2 text-222`} href="/">
           <p
             className={`flex flex-col justify-center text-gray-200 transition-all duration-300`}
           >
@@ -122,18 +134,18 @@ function Header() {
             customIdSuffix="drawer"
             open={isOpen}
             onClose={toggleDrawer}
-            direction='right'
+            direction='left'
             style={{ backgroundColor: '#111' }}
-            size={`400px`}
+            size={`${typeof window !== "undefined" && window.innerWidth < 400 ? `${window.innerWidth}px` : '400px'}`}
           >
-            <div className="h-screen py-6 px-4">
+            <div className={`h-screen py-6 ${typeof window !== "undefined" && window.innerWidth < 400 ? '' : 'px-4'}`}>
               <div className="h-3/4 overflow-y-scroll">
                 <div className="flex justify-between"><h1 className="text-2xl font-bold ml-4 mt-1">My Cart</h1> <span className="text-3xl hover:cursor-pointer mr-3" onClick={toggleDrawer}> &times;</span></div>
 
                 {cart?.length > 0 ?
                   <ul className="pb-4">
                     {cart.map(({ product, quantity }: { product: Product, quantity: number }) => {
-                      return <li className="mt-4 ml-4" key={product.id}>
+                      return <li className={`mt-4 ${typeof window !== "undefined" && window.innerWidth < 400 ? 'scale-90 ml-0': 'ml-4'}`} key={product.id}>
                         <div className="flex">
                           <div className="relative w-20 h-20">
                             <Image src={product.thumbnail} alt={product.title} fill priority className="object-contain" sizes="(max-width: 1400px) 60%, (max-width: 1100px) 50%" />
