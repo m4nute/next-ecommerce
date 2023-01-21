@@ -89,7 +89,8 @@ html {
 html,
 body {
   scroll-behavior: smooth;
-  
+  height: fit-content;
+  background-color: #111;
 }
 
 .card {

@@ -7,7 +7,7 @@ import { Button } from '@mantine/core';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Avatar } from "@nextui-org/react";
-import {signOut} from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 
 function parseISOString(s: any) {
   var b = s.split(/\D+/);
@@ -21,8 +21,8 @@ function account(props: any) {
 
   const [pIndex, setPIndex] = useState(0)
   return (
-    <div className='flex mt-10 gap-20 mx-32 text-white'>
-      <div className='w-1/2'>
+    <div className='flex flex-col md:flex-row mt-10 gap-2 sm:gap-4 md:gap-8 lg:gap-12 xl:gap-16 mx-3 sm:mx-6 md:mx-10 lg:mx-16 xl:mx-24 text-white'>
+      <div className='w-full md:w-1/2'>
         <h1 className='font-bold text-2xl text-center'>Purchases</h1>
         <h2 className='font-bold opacity-75 text-lg text-center pb-3'>{purchases.length} Total Purchases</h2>
         {purchases.length > 0 ? purchases.map((purchase: any, index: number) => {
@@ -67,11 +67,11 @@ function account(props: any) {
 
           )
         }) : <h2 className='text-center text-2xl'>No Purchases Made</h2>}
-        
+
       </div>
-      <div className='w-1/2'>
-        <h1 className='text-center font-bold text-2xl pb-8'>My Data</h1>
-        <div className='flex rounded-md p-4'>
+      <div className='w-full md:w-1/2'>
+        <h1 className='text-center font-bold text-2xl pb-2 md:pb-8 mt-6 md:mt-0'>My Data</h1>
+        <div className='flex rounded-md'>
           <Avatar
             className='mt-3 mr-4'
             as="button"

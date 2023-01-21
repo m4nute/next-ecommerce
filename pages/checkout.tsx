@@ -78,39 +78,39 @@ const PaymentForm = ({ data }: any) => {
 
     const router = useRouter();
     return (
-        <div className='mx-32 text-gray-100'>
+        <div className='mx-4 lg:mx-20 xl:mx-24 text-gray-100'>
             <h1 className='text-4xl mt-8 text-center font-bold'>Checkout</h1>
             <h2 className='opacity-50 text-center'>It's fake, fill with random data</h2>
-            <button onClick={() => router.back()}><ArrowBackIcon className='mr-1' />Go Back</button>
-            <div className='flex mt-5 gap-8'>
-                <div className='w-1/2'>
+            <button className='mt-4 sm:mt-0' onClick={() => router.back()}><ArrowBackIcon className='mr-1' />Go Back</button>
+            <div className='flex mt-5 gap-5 lg:gap-8 flex-col sm:flex-row'>
+                <div className='w-full sm:w-3/5 md:w-1/2'>
                     {cart?.length > 0 && <h1 className='text-3xl font-bold pb-4'>Total: ${cart?.reduce((total: number, item: any) => { return total + item.product.price * item.quantity }, 0)}</h1>}
-                    <ul className=" overflow-y-scroll h-96 rounded-lg">
+                    <ul className=" overflow-y-scroll h-fit rounded-lg">
                         {cart?.length > 0 ? cart?.map(({ product, quantity }: { product: Product, quantity: number }, index: number) => {
                             return (
-                                <div key={product.id} className={`w-full p-4 border-333 ${index === 0 ? 'pt-0' : 'border-t'}`}>
+                                <div key={product.id} className={`w-full p-4 pl-0 border-333 ${index === 0 ? 'pt-0' : 'border-t'}`}>
                                     <li>
                                         <div className="flex">
                                             <div className="relative w-20 h-20">
                                                 <Image src={product.thumbnail} alt={product.title} fill priority className="object-contain" sizes="(max-width: 1400px) 60%, (max-width: 1100px) 50%" />
                                             </div>
                                             <div className="pl-4 flex flex-col justify-center gap-2">
-                                                <h1 className="text-white">{product.title}</h1>
+                                                <h1 className="text-white" onClick={() => router.push(`product/${product.id}`)}> <span className='inline-block hover:font-bold hover:cursor-pointer'>{product.title}</span></h1>
                                                 <div className="flex">
                                                     <h1 className="font-bold">${product.price}</h1>
-                                                    <h1 className="text-green-400 ml-4">{product.discountPercentage}% OFF</h1>
+                                                    <h1 className="text-green-400 text-sm ml-2 sm:ml-4">{product.discountPercentage}% OFF</h1>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="mt-3 flex">
-                                            <Button onClick={() => removeProduct(product.id)} variant='contained' className="bg-333 py-2 px-4 w-10 rounded-md duration-200 transition-all hover:bg-444"><DeleteIcon fontSize="small" /></Button>
-                                            <div className="flex ml-4">
-                                                <h1 className="mx-3 flex"><span className="font-bold flex flex-col justify-center pr-2">Amount:</span> <span className="flex flex-col justify-center">{quantity}</span></h1>
-                                                <Button color="info" variant="contained" className="bg-333 mr-3" onClick={() => {
+                                            <Button onClick={() => removeProduct(product.id)} variant='contained' className="bg-333 rounded-md duration-200 transition-all hover:bg-444"><DeleteIcon fontSize="small" /></Button>
+                                            <div className="flex ml-2 sm:ml-4">
+                                                <h1 className="mx-2 flex"><span className="font-bold flex flex-col justify-center pr-2">Amount:</span> <span className="flex flex-col justify-center">{quantity}</span></h1>
+                                                <Button color="info" variant="contained" className="bg-333 mr-2 sm:mr-3" onClick={() => {
                                                     quantity === 1 ? (removeProduct(product.id)) :
                                                         updateProductQuantity(product.id, (quantity - 1))
                                                 }}> - </Button>
-                                                <Button color="info" variant="contained" className="bg-333" onClick={() => updateProductQuantity(product.id, (quantity + 1))}> + </Button>
+                                                <Button color="info" variant="contained" className="bg-333" onClick={() => !(quantity >= 10 || quantity >= product.stock) && updateProductQuantity(product.id, (quantity + 1))}> + </Button>
                                             </div>
                                         </div>
                                     </li>
@@ -124,8 +124,8 @@ const PaymentForm = ({ data }: any) => {
                         }
                     </ul>
                 </div>
-                <div className='w-1/2'>
-                    <form onSubmit={handleSubmit} className="w-2/3 mx-auto">
+                <div className='px-0 sm:px-0 w-full sm:w-3/5 md:w-1/2 pb-8 sm:pb-0'>
+                    <form onSubmit={handleSubmit} className="md:w-full lg:w-4/5 xl:w-2/3 mx-auto">
                         <div className='flex flex-col'>
                             <label className='font-bold'>Name on Card</label>
                             <input type="text" className='rounded-md h-9 p-4 mt-2 bg-222' value={name} onChange={(e) => setName(e.target.value)} />
