@@ -86,7 +86,7 @@ const Login: NextPage = () => {
         <div className="text-center flex justify-center mt-3">
           <Button leftIcon={<GoogleIcon />} variant="default" color="gray" className="rounded-3xl border-2 px-5 text-white hover:bg-222 transition-all duration-300" onClick={() =>
             signIn("google", {
-              callbackUrl: "http://localhost:3000/",
+              callbackUrl: "https://pedastore.vercel.app",
             })
           } >Google</Button>
         </div>
