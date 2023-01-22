@@ -63,7 +63,7 @@ function ProductPage({ data }: any) {
           </div>
           <div className="text-white ml-0 sm:ml-4 md:ml-10 lg:ml-12 mt-6 sm:mt-0 p-4 lg:p-8  rounded-md card w-full sm:w-1/2">
             <div className="flex sm:flex-col gap-4 sm:gap-0">
-              <h1 className="text-3xl">{product.title}</h1>
+              <h1 className="text-lg sm:text-xl lg:text-2xl">{product.title}</h1>
               <div className="flex gap-2 sm:mt-3">
                 <StarRating readOnly={true} rating={product.rating} />
                 <span className="text-green-400 mt-1.5 sm:mt-0">({product.rating})</span>
@@ -128,7 +128,7 @@ function ProductPage({ data }: any) {
           <ul className="flex mb-10 gap-6 justify-center w-full flex-wrap px-0">
             {similars.map((prod: Product, index: number) => {
               return (
-                <li key={index} className="bg-black text-white h-52 w-4/5 sm:w-2/5 md:w-1/3 product-card transition-all duration-100 rounded-md ">
+                <li key={index} className="bg-black text-white h-52 w-4/5 sm:w-2/5 md:w-1/3 lg:w-1/4 product-card transition-all duration-100 rounded-md ">
                   <div className="h-3/5 relative w-full bg-222">
                     <Image
                       src={prod.thumbnail}
