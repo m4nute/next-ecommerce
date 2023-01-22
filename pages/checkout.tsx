@@ -85,7 +85,7 @@ const PaymentForm = ({ data }: any) => {
             <div className='flex mt-5 gap-5 lg:gap-8 flex-col sm:flex-row'>
                 <div className='w-full sm:w-3/5 md:w-1/2'>
                     {cart?.length > 0 && <h1 className='text-3xl font-bold pb-4'>Total: ${cart?.reduce((total: number, item: any) => { return total + item.product.price * item.quantity }, 0)}</h1>}
-                    <ul className=" overflow-y-scroll h-fit rounded-lg">
+                    <ul className=" overflow-y-scroll h-96 rounded-lg">
                         {cart?.length > 0 ? cart?.map(({ product, quantity }: { product: Product, quantity: number }, index: number) => {
                             return (
                                 <div key={product.id} className={`w-full p-4 pl-0 border-333 ${index === 0 ? 'pt-0' : 'border-t'}`}>

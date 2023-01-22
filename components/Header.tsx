@@ -68,7 +68,7 @@ function Header() {
           </p>
         </Link>
 
-        <div className="w-1/4 justify-end flex carrito">
+        <div className="w-2/5 justify-end flex carrito">
           {
             status !== 'loading' && (
               !session ?
@@ -145,7 +145,7 @@ function Header() {
                 {cart?.length > 0 ?
                   <ul className="pb-4">
                     {cart.map(({ product, quantity }: { product: Product, quantity: number }) => {
-                      return <li className={`mt-4 ${typeof window !== "undefined" && window.innerWidth < 400 ? 'scale-90 ml-0': 'ml-4'}`} key={product.id}>
+                      return <li className={`mt-4 ${typeof window !== "undefined" && window.innerWidth < 400 ? 'scale-90 ml-0' : 'ml-4'}`} key={product.id}>
                         <div className="flex">
                           <div className="relative w-20 h-20">
                             <Image src={product.thumbnail} alt={product.title} fill priority className="object-contain" sizes="(max-width: 1400px) 60%, (max-width: 1100px) 50%" />

@@ -12,9 +12,8 @@ function NavLink(props: Props) {
 
   return (
     <Link
-      className={`group transition-all duration-300 ease-in-out px-4 ${
-        align && "flex flex-col justify-center"
-      }`}
+      className={`group transition-all duration-300 ease-in-out px-2 ${align && "flex flex-col justify-center"
+        }`}
       href={redirect}
     >
       <span

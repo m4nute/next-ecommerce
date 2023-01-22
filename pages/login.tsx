@@ -39,7 +39,7 @@ const Login: NextPage = () => {
       password: "",
     })
   }, [authType])
-  
+
 
   const loginUser = async () => {
     if (!(/^\S+@\S+$/.test(userInfo.email)) || userInfo.password.length < 6) return;
@@ -51,7 +51,7 @@ const Login: NextPage = () => {
     });
     res?.error ? setInvalid(true) : router.push("/");
   };
-  
+
   const registerUser = async () => {
     await axios
       .post(
@@ -81,8 +81,8 @@ const Login: NextPage = () => {
 
   return (
     <div className='text-gray-200 mt-8 text-center'>
-      <div className="w-1/2 mx-auto">
-        <h1 className="text-2xl">Welcome to Peda Store, {authType.toLowerCase()} with</h1>
+      <div className="w-5/6 sm:w-4/6 xl:w-2/3 mx-auto">
+        <h1 className="text-lg sm:text-xl">Welcome to Peda Store, {authType.toLowerCase()} with</h1>
         <div className="text-center flex justify-center mt-3">
           <Button leftIcon={<GoogleIcon />} variant="default" color="gray" className="rounded-3xl border-2 px-5 text-white hover:bg-222 transition-all duration-300" onClick={() =>
             signIn("google", {
@@ -90,11 +90,9 @@ const Login: NextPage = () => {
             })
           } >Google</Button>
         </div>
-
-        <Divider label="Or continue with email" labelPosition="center" my="lg" className="w-1/2 mx-auto" />
-
+        <Divider label="Or continue with email" labelPosition="center" my="lg" className="w-full md:w-4/5 lg:w-1/2 mx-auto" />
       </div>
-      <form className="w-1/5 mx-auto">
+      <form className="lg:w-1/3 md:w-1/2 sm:w-3/5 w-5/6 mx-auto">
         <Stack className="gap-1">
           {authType === 'Register' && (
             <>
@@ -131,9 +129,9 @@ const Login: NextPage = () => {
       </form>
 
       {invalid && <h1 className="text-red-500 mt-4">Invalid credentials</h1>}
-      
 
-      <div className={`w-1/4 mx-auto flex justify-between ${invalid ? 'mt-4' : 'mt-10'}`}>
+
+      <div className={`xl:w-1/4 lg:w-1/3 md:w-2/5 sm:w-1/2 w-4/5 mx-auto flex justify-between ${invalid ? 'mt-4' : 'mt-10'}`}>
         <button onClick={() => setAuthType(oppAuthType[authType])} className='hover:underline transition-all duration-300 opacity-75 text-sm'>
           {authType === "Login" ? "Don't have an account yet?" : "Already have an account?"}  {oppAuthType[authType]}
         </button>

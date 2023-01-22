@@ -69,7 +69,7 @@ function account(props: any) {
         }) : <h2 className='text-center text-2xl'>No Purchases Made</h2>}
 
       </div>
-      <div className='w-full md:w-1/2'>
+      <div className='w-full md:w-1/2 pb-10 md:pb-0'>
         <h1 className='text-center font-bold text-2xl pb-2 md:pb-8 mt-6 md:mt-0'>My Data</h1>
         <div className='flex rounded-md'>
           <Avatar
@@ -79,9 +79,9 @@ function account(props: any) {
             src={data.session.user?.image || 'https://imgs.search.brave.com/lfVSxDcSs8exH_5USRuckuzsveb1aaqhT7f17NhiDaM/rs:fit:400:400:1/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzU4L2Yy/L2RlLzU4ZjJkZTUw/YmFkMGZiMjRjMjRk/NDc1Nzg0MWQ1N2M0/LmpwZw' || undefined}
           />
           <div>
-            <h2 className='text-lg'><span className='font-bold'>Name:</span> {data.session.user?.name}</h2>
-            <h2 className='text-lg mt-1'><span className='font-bold'>Email:</span> {data.session.user?.email}</h2>
-            <h2 className='text-lg mt-1'><span className='font-bold'>Total Spent:</span> ${purchases.reduce((sum: number, purchase: any) => {
+            <h2 className='text-lg md:text-md'><span className='font-bold'>Name:</span> {data.session.user?.name}</h2>
+            <h2 className='text-lg md:text-md mt-1 text-ellipsis overflow-hidden w-full whitespace-nowrap'><span className='font-bold'>Email: </span>{data.session.user?.email}</h2>
+            <h2 className='text-lg md:text-md mt-1'><span className='font-bold'>Total Spent:</span> ${purchases.reduce((sum: number, purchase: any) => {
               return sum + purchase.cart?.reduce((total: number, item: any) => { return total + item.product.price * item.quantity }, 0)
             }, 0)}
             </h2>
